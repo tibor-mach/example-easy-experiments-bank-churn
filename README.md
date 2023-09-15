@@ -33,16 +33,12 @@ pip install -r requirements.txt
 This DVC project comes with a preconfigured DVC 
 [remote storage](https://dvc.org/doc/command-reference/remote) that holds raw 
 data (input), intermediate, and final results that are produced. 
-This is a read-only HTTP remote.
 
+You can run `dvc get` to download the data:
 ```bash
-dvc remote list
-# storage https://remote.dvc.org/demo-bank-customer-churn
-```
-
-You can run dvc pull to download the data:
-```bash
-dvc pull data/Churn_Modelling.csv
+dvc get https://github.com/iterative/demo-bank-customer-churn/ \
+    data/Churn_Modelling.csv \
+    -o data/Churn_Modelling.csv 
 ```
 
 Now you can start a Jupyter Notebook server and execute the notebook `notebook/TrainChurnModel.ipynb` top to bottom to train a model
@@ -55,12 +51,14 @@ If you'd like to test commands like [`dvc push`](https://man.dvc.org/push), that
 
 This kind of remote is located in the local file system, but is external to the DVC project.
 ```bash
-mkdir -p /tmp/dvc/demo-bank-customer-churn
-dvc remote add local /tmp/dvc/demo-bank-customer-churn
+mkdir -p /tmp/dvc/example-easy-experiments-bank-churn
+dvc remote add -d local /tmp/dvc/example-easy-experiments-bank-churn
+git add .dvc/config && git commit -m "Add local DVC remote"
 ```
+
 You should now be able to run:
 ```bash
-dvc push -r local
+dvc push
 ```
 
 # DVCLive Tutorial
